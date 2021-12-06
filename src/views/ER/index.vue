@@ -1,9 +1,10 @@
 <template>
     <div class="container_warp">
+      <div id="stencil" >stencil</div>
       <div id="containerChart"></div>
       <RightDrawer class="right_drawer" :drawerType="type" :selectCell="selectCell" :graph="graph" :grid="grid" @deleteNode="deleteNode"></RightDrawer>
       <div class="operating">
-        <div class="btn-group stencil">
+        <div class="btn-group ">
           <div class="btn" title="圆形节点" @mousedown="startDrag('Circle',$event)">
             <i class="iconfont icon-circle"></i>
           </div>
@@ -194,7 +195,7 @@ export default {
               })
               const stencilContainer = document.querySelector('#stencil')
               stencilContainer.appendChild(this.stencil.container)
-this.stencil.load([this.erRect], 'combination')
+         this.stencil.load([this.erRect], 'combination')
             var _that = this
             this.graph = new Graph({
                 container: document.getElementById('containerChart'),
@@ -386,4 +387,7 @@ this.stencil.load([this.erRect], 'combination')
 <style lang="less">
   @import '../../assets/iconfont.css';
   @import '../index.less';
+  #stencil{
+    
+  }
 </style>
