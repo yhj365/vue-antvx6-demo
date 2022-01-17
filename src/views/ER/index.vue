@@ -196,6 +196,7 @@ export default {
               const stencilContainer = document.querySelector('#stencil')
               stencilContainer.appendChild(this.stencil.container)
          this.stencil.load([this.erRect], 'combination')
+            
             var _that = this
             this.graph = new Graph({
                 container: document.getElementById('containerChart'),

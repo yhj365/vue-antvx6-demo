@@ -23,6 +23,11 @@ export default new Router({
       path: '/demo',
       name: 'demo',
       component: () => import('@/views/demo/index')
+    },
+    {
+      path: '/xiaonuo',
+      name: 'xiaonuo',
+      component: () => import('@/views/xiaonuo/index')
     }
   ]
 })
