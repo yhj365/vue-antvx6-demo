@@ -13,6 +13,7 @@
     "@antv/x6": "^1.18.3",
     "@antv/x6-vue-shape": "^1.2.3",
     "@vue/composition-api": "^1.0.0-rc.6",
+    "element-ui": "^2.15.6",
     "insert-css": "^2.0.0",
     "less": "^4.1.1",
     "view-design": "^4.5.0",

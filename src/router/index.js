@@ -28,6 +28,11 @@ export default new Router({
       path: '/xiaonuo',
       name: 'xiaonuo',
       component: () => import('@/views/xiaonuo/index')
+    },
+    {
+      path: '/movaTable',
+      name: 'movaTable',
+      component: () => import('@/views/movaTable/index')
     }
   ]
 })
