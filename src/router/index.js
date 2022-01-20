@@ -20,6 +20,11 @@ export default new Router({
       component: () => import('@/views/ER/index')
     },
     {
+      path: '/er2',
+      name: 'er2',
+      component: () => import('@/views/er2/index')
+    },
+    {
       path: '/demo',
       name: 'demo',
       component: () => import('@/views/demo/index')
