@@ -35,9 +35,9 @@ export default new Router({
       component: () => import('@/views/xiaonuo/index')
     },
     {
-      path: '/movaTable',
-      name: 'movaTable',
-      component: () => import('@/views/movaTable/index')
+      path: '/moveTable',
+      name: 'moveTable',
+      component: () => import('@/views/moveTable/index')
     }
   ]
 })
