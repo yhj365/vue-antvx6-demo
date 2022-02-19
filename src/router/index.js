@@ -38,6 +38,11 @@ export default new Router({
       path: '/moveTable',
       name: 'moveTable',
       component: () => import('@/views/moveTable/index')
+    },
+    {
+      path: '/characteristicStructure',
+      name: 'characteristicStructure',
+      component: () => import('@/views/characteristicStructure/index')
     }
   ]
 })

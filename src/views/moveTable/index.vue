@@ -1,14 +1,57 @@
 <template>
-  <div>
+  <div style="padding: 20px">
+    <div id="textid">
+      log(
+        <el-input v-model="input" style="width:100px;" placeholder="请输入内容"></el-input><el-input v-model="input" style="width:100px;" placeholder="请输入内容"></el-input>
+      )
+      <el-button type="">确定</el-button>
+    </div>
+    <div>
+      +<el-input v-model="input" style="width:100px;" placeholder="请输入内容"></el-input>
+      <el-button>确定</el-button>
+    </div>
+    <div>
+      log(x,y)
+    </div>
+    <text id="test">pow(,)</text>
     <p style="text-align: center; font-size: 20px; margin-bottom: 50px">
       自定义表头样式和整列的拖动
     </p>
-    <div @mouseleave="moveTableOutside">
+    <div style="display: flex" @mouseleave="moveTableOutside">
+      <div class="data-overview">
+        <span>数据概览</span>
+      </div>
       <el-table
-        class="drag_table"
+        size="small"
+        class="drag_table hidden-tbody"
         :data="tableData"
-        border
-        stripe
+        :cell-class-name="cellClassName"
+        :header-cell-class-name="headerCellClassName"
+      >
+        <el-table-column
+          v-for="(col, index) in tableHeader"
+          min-width="120"
+          :key="index"
+          :prop="col.prop"
+          :label="col.label"
+          :column-key="index.toString()"
+          :render-header="renderHeader"
+        >
+          <template slot-scope="scope">
+            <span>{{ scope.row[col.prop] }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div style="display: flex;border:1px solid #000;border-radius: 8px;overflow: hidden;">
+      <div class="data-overview">
+        <el-table class="drag_table hidden-thead" :data="tableData">
+          <el-table-column type="index" width="50"> </el-table-column>
+        </el-table>
+      </div>
+      <el-table
+        class="drag_table hidden-thead"
+        :data="tableData"
         :cell-class-name="cellClassName"
         :header-cell-class-name="headerCellClassName"
       >
@@ -19,9 +62,40 @@
           :label="col.label"
           :column-key="index.toString()"
           :render-header="renderHeader"
+          min-width="120"
+          show-overflow-tooltip
         >
           <template slot-scope="scope">
-           <span>{{scope.row[col.prop]}}</span>
+            <span>{{ scope.row[col.prop] }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div style="display: flex">
+      <div class="data-overview">
+        <el-table class="drag_table hidden-thead" :data="tableData">
+          <el-table-column type="index" width="50"> </el-table-column>
+        </el-table>
+      </div>
+      <el-table
+      ref="last-table"
+        class="drag_table hidden-thead "
+        :data="tableData"
+        :cell-class-name="cellClassName"
+        :header-cell-class-name="headerCellClassName"
+      >
+        <el-table-column
+          v-for="(col, index) in tableHeader"
+          :key="index"
+          :prop="col.prop"
+          :label="col.label"
+          :column-key="index.toString()"
+          :render-header="renderHeader"
+          min-width="120"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">
+            <span>{{ scope.row[col.prop] }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -33,6 +107,7 @@ export default {
   name: 'movaTable',
   data() {
     return {
+      input: '',
       tableData: [{
         name: '王小虎',
         date: '2016-05-02',
@@ -49,6 +124,14 @@ export default {
         name: '王小龙',
         date: '2016-05-03',
         address: '上海市普陀区金沙江路 1516 弄'
+      }, {
+        name: '王小龙',
+        date: '2016-05-03',
+        address: '上海市普陀区金沙江路 1516 弄'
+      }, {
+        name: '王小龙',
+        date: '2016-05-03',
+        address: '上海市普陀区金沙江路 1516 弄'
       }],
       tableHeader: [{
         prop: 'name',
@@ -59,6 +142,15 @@ export default {
       }, {
         prop: 'address',
         label: '地址'
+      }, {
+        prop: 'address',
+        label: '地址2'
+      }, {
+        prop: 'address',
+        label: '地址2'
+      }, {
+        prop: 'address',
+        label: '地址2'
       }],
       dragState: {
         startIndex: -1, // 拖动起始元素的index
@@ -69,6 +161,15 @@ export default {
         moveTableOutsideBack: false // 拖出到table外之后又拖回来
       }
     }
+  },
+  mounted(){
+    const bodyWrapper = this.$refs['last-table'].bodyWrapper
+    bodyWrapper.addEventListener('scroll',()=>{
+      let scrollLeft = bodyWrapper.scrollLeft
+      console.log(scrollLeft);
+      document.getElementsByClassName('el-table__header-wrapper')[0].scrollLeft = scrollLeft 
+      document.getElementsByClassName('el-table__body-wrapper')[2].scrollLeft = scrollLeft 
+    })
   },
   methods: {
     // drag_table在渲染表头时调用
@@ -97,51 +198,58 @@ export default {
         }
       }, [
         h('span', [
-          h('span', column.label),
+          h('el-button',{
+            props: {
+              type: "text"
+            }
+          }, column.label),
           h('el-popover', {
-            props:{
+            props: {
               placement: 'bottom',
               width: '80',
               trigger: 'hover',
             },
-          },[
+          }, [
             h('div',
               {
-                class: ['flex','flex-direction','margin-bottom'],
-                props:{
+                class: ['flex', 'flex-direction', 'margin-bottom'],
+                props: {
                 },
               },
-            [
-              h('el-button',
-                {
-                  props:{
-                    type:"text"
-                  },
-                  on: {
-                    click: () => {
-                      console.log(column,$index)
+              [
+                h('el-button',
+                  {
+                    props: {
+                      type: "text"
+                    },
+                    on: {
+                      click: () => {
+                        console.log(column, $index)
+                      }
                     }
-                  }
-                },
-                '数据变换',
-              ),
-              h('el-button',
-                {
-                  props:{
-                    type:"text"
                   },
-                  on: {
-                    click: () => {
-                      console.log(column,$index)
+                  '数据变换',
+                ),
+                h('el-button',
+                  {
+                    props: {
+                      type: "text"
+                    },
+                    on: {
+                      click: () => {
+                        console.log(column, $index)
+                      }
                     }
-                  }
-                },'删除',),
-            ]),
+                  }, '删除'),
+              ]),
             h('el-button',
-            {
-              class: 'el-icon-star-off',
-              slot: "reference"
-            })
+              {
+                props: {
+                  type: "text"
+                },
+                class: 'el-icon-star-off',
+                slot: "reference"
+              })
           ]),
         ]),
         // 给每个表头添加一个class=virtual 是画虚线的类名。
@@ -265,7 +373,6 @@ export default {
       column,
       columnIndex
     }) {
-      console.log(1111111)
       return columnIndex === this.dragState.afterMoveIndex ? `drag_active_${this.dragState.direction}` : ''
     },
     // 动态给表头单元格th添加class，实现拖动中的背景
@@ -273,14 +380,13 @@ export default {
       column,
       columnIndex
     }) {
-      console.log(22222)
       return (columnIndex === this.dragState.startIndex ? `dragging_column` : '')
     },
 
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
 * {
   padding: 0;
   margin: 0;
@@ -314,7 +420,35 @@ body {
             如果使用了sass或者less,可以加scoped 然后在用特殊手法处理样式
         */
 .dragging_column {
-  background-color: #f3f3f3 !important;
+  background-color: #e3e3e3 !important;
 }
-
+.hidden-tbody.el-table {
+  height: 57px;
+  box-sizing: border-box;
+  >>> .el-table__body-wrapper {
+    display: none !important;
+    overflow: hidden;
+  }
+  >>> tbody {
+    //隐藏上面表格的tbody
+    display: none!important;
+    overflow: hidden;
+  }
+}
+.auto-scorll-table {
+  height: calc(100% - 34px);
+  overflow: hidden;
+}
+.hidden-thead {
+  border-top: none; //防止边框重叠
+  >>> .el-table__header-wrapper {
+    display: none !important;
+    overflow: hidden;
+  }
+  >>> thead {
+    //隐藏下面表格的thead
+    display: none !important;
+    overflow: hidden;
+  }
+}
 </style>
